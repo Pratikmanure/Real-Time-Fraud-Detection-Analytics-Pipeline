@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fraudstream-command-center"
+version = "0.1.0"
+description = "A real-time fraud detection analytics pipeline built with Python, SQLite, SQL window functions, and Streamlit."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Pratik" }
+]
+dependencies = [
+  "streamlit",
+  "pandas",
+  "plotly",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["fraud_pipeline*"]
