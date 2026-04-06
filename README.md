@@ -25,6 +25,8 @@ flowchart LR
 - `fraud_pipeline/analytics.py`: SQL anomaly detection plus Python risk scoring
 - `fraud_pipeline/dashboard.py`: live Streamlit fraud operations dashboard
 - `fraud_pipeline/validate_pipeline.py`: smoke test for ingestion plus analytics
+- `dashboard.py`: root Streamlit entrypoint for Streamlit Community Cloud
+- `analytics.py`, `database.py`, `simulator.py`, `validate_pipeline.py`: root runtime modules for simple cloud execution
 - `sql_rules.md`: explanation of the window-function rules
 
 ## What makes it interview-worthy
@@ -93,7 +95,7 @@ If you deploy on Streamlit Community Cloud, point the app to:
 - Main file path: `dashboard.py`
 - Branch: `main`
 
-The repo-root `dashboard.py` is a thin wrapper that imports the packaged app from `fraud_pipeline/dashboard.py`, which keeps local development and cloud deployment aligned.
+The repo root contains deployable runtime modules so Streamlit Community Cloud can run `dashboard.py` directly without relying on package-path resolution.
 
 ## Resume bullet ideas
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from fraud_pipeline.database import read_sql
+from database import read_sql
 
 
 BASE_FLAGGED_QUERY = """
