@@ -61,7 +61,7 @@ python -m fraud_pipeline.simulator --batch-size 10 --sleep-seconds 2
 3. In a second terminal, launch the dashboard:
 
 ```powershell
-python -m streamlit run fraud_pipeline/dashboard.py
+python -m streamlit run dashboard.py
 ```
 
 4. Optionally run the smoke test:
@@ -85,6 +85,15 @@ powershell -ExecutionPolicy Bypass -File .\run_validate.ps1
 2. Show the SQL rules and point out the use of `LAG`, rolling `COUNT`, rolling `AVG`, and `ROW_NUMBER`.
 3. Open the dashboard and explain how multiple rules combine into a fraud type and risk score.
 4. Close by describing how you would scale the same design to Kafka, dbt, Airflow, and a warehouse.
+
+## Streamlit Cloud
+
+If you deploy on Streamlit Community Cloud, point the app to:
+
+- Main file path: `dashboard.py`
+- Branch: `main`
+
+The repo-root `dashboard.py` is a thin wrapper that imports the packaged app from `fraud_pipeline/dashboard.py`, which keeps local development and cloud deployment aligned.
 
 ## Resume bullet ideas
 
