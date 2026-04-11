@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from fraud_pipeline.analytics import fetch_flagged_transactions, fetch_heatmap_data, fetch_recent_transactions, fetch_summary
-from fraud_pipeline.database import init_db, insert_transactions
-from fraud_pipeline.simulator import _build_cards, generate_transactions
+from analytics import fetch_flagged_transactions, fetch_heatmap_data, fetch_recent_transactions, fetch_summary
+from database import init_db, insert_transactions
+from simulator import _build_cards, generate_transactions
 
 
 def main() -> None:
