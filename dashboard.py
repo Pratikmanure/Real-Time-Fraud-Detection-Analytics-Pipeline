@@ -6,9 +6,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from fraud_pipeline.analytics import fetch_heatmap_data, fetch_recent_transactions, fetch_summary
-from fraud_pipeline.database import DB_PATH, init_db, insert_transactions
-from fraud_pipeline.simulator import _build_cards, generate_transactions
+from analytics import fetch_heatmap_data, fetch_recent_transactions, fetch_summary
+from database import DB_PATH, init_db, insert_transactions
+from simulator import _build_cards, generate_transactions
 
 
 CITY_COORDS = {
