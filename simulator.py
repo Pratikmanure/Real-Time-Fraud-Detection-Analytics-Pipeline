@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from database import init_db, insert_transactions
+from fraud_pipeline.database import init_db, insert_transactions
 
 
 CITY_PROFILES = [

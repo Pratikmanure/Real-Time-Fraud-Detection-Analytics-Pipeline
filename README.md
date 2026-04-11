@@ -97,4 +97,8 @@ If you deploy on Streamlit Community Cloud, point the app to:
 
 The repo root contains deployable runtime modules so Streamlit Community Cloud can run `dashboard.py` directly without relying on package-path resolution.
 
+## Resume bullet ideas
 
+- Built a real-time fraud analytics pipeline using Python, SQLite, SQL window functions, and Streamlit to detect anomalous card activity.
+- Designed rolling anomaly rules for impossible travel, velocity spikes, spend outliers, and account takeover signals with explainable risk scoring.
+- Developed a live security dashboard with alert feeds, fraud typology charts, and geographic hotspot monitoring.
