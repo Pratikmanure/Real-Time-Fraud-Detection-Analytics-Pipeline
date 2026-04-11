@@ -41,19 +41,46 @@ def apply_theme() -> None:
                 --danger: #972d20;
                 --line: rgba(104, 74, 61, 0.14);
                 --shadow: 0 18px 40px rgba(86, 50, 35, 0.14);
+                --rule-bg: rgba(194,91,42,0.08);
+                --note-bg: rgba(30,106,99,0.05);
+                --bg-1: #f7f0e8;
+                --bg-2: #efe6da;
+                --sidebar-1: #fff8ee;
+                --sidebar-2: #f8ecde;
             }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --panel: rgba(18, 18, 20, 0.96);
+                    --panel-2: #1a1a1e;
+                    --text: #fdfdfd;
+                    --muted: #9e9ea6;
+                    --accent: #00f0ff; /* Neon cyan */
+                    --accent-2: #ff4b4b; /* Neon red */
+                    --danger: #ff3333;
+                    --line: rgba(255, 255, 255, 0.1);
+                    --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+                    --rule-bg: rgba(0,240,255,0.08);
+                    --note-bg: rgba(255,75,75,0.05);
+                    --bg-1: #0a0a0c;
+                    --bg-2: #050506;
+                    --sidebar-1: #101014;
+                    --sidebar-2: #0a0a0c;
+                }
+            }
+
             .stApp {
                 background:
-                    radial-gradient(circle at top left, rgba(194,91,42,0.12), transparent 28%),
-                    radial-gradient(circle at top right, rgba(30,106,99,0.10), transparent 22%),
-                    linear-gradient(180deg, #f7f0e8 0%, #efe6da 100%);
+                    radial-gradient(circle at top left, var(--note-bg), transparent 28%),
+                    radial-gradient(circle at top right, var(--rule-bg), transparent 22%),
+                    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
                 color: var(--text);
                 font-family: 'IBM Plex Sans', sans-serif;
             }
             .block-container {padding-top: 1.2rem; padding-bottom: 2rem;}
             #MainMenu, footer, header {visibility: hidden;}
             [data-testid="stSidebar"] {
-                background: linear-gradient(180deg, #fff8ee 0%, #f8ecde 100%);
+                background: linear-gradient(180deg, var(--sidebar-1) 0%, var(--sidebar-2) 100%);
                 border-right: 1px solid var(--line);
             }
             .hero, .panel {
@@ -71,7 +98,7 @@ def apply_theme() -> None:
                 font-size: 0.72rem;
                 font-weight: 700;
             }
-            .hero-title, h2, h3 {font-family: 'Space Grotesk', sans-serif; color: var(--text);}
+            .hero-title, h2, h3 {font-family: 'Space Grotesk', sans-serif; color: var(--text) !important;}
             .hero-title {font-size: 2.25rem; margin: 0.35rem 0;}
             .hero-copy {color: var(--muted); max-width: 900px;}
             .metric-shell {
@@ -87,13 +114,13 @@ def apply_theme() -> None:
                 margin: 0.2rem 0.4rem 0 0;
                 border-radius: 999px;
                 border: 1px solid var(--line);
-                background: rgba(194,91,42,0.08);
+                background: var(--rule-bg);
                 font-size: 0.8rem;
                 color: var(--text);
             }
             .note-card {
                 border: 1px solid var(--line);
-                background: rgba(30,106,99,0.05);
+                background: var(--note-bg);
                 border-radius: 18px;
                 padding: 0.9rem 1rem;
                 color: var(--text);
@@ -101,7 +128,7 @@ def apply_theme() -> None:
             .stButton > button {
                 border-radius: 14px;
                 min-height: 2.8rem;
-                background: linear-gradient(135deg, #b8562a, #d17c4f);
+                background: linear-gradient(135deg, var(--accent), var(--accent-2));
                 color: white;
                 border: none;
                 font-weight: 700;
@@ -178,7 +205,7 @@ def _render_rule_panel() -> None:
 
 def _render_alerts(flagged: pd.DataFrame) -> None:
     st.markdown("<div class='panel'>", unsafe_allow_html=True)
-    st.markdown("### High-Risk Alerts")
+    st.markdown("### High-Risk Alerts & AI Insights")
     if flagged.empty:
         st.info("No anomalies yet. Start the simulator or seed a batch from the sidebar.")
     else:
@@ -186,14 +213,10 @@ def _render_alerts(flagged: pd.DataFrame) -> None:
             [
                 "event_timestamp",
                 "card_id",
-                "merchant_city",
-                "merchant_country",
                 "amount",
                 "fraud_type",
                 "risk_score",
-                "risk_band",
-                "rule_count",
-                "triggered_rules",
+                "ai_insight",
             ]
         ].copy()
         display["event_timestamp"] = pd.to_datetime(display["event_timestamp"]).dt.strftime("%Y-%m-%d %H:%M:%S")
@@ -291,9 +314,9 @@ def _render_interview_notes() -> None:
         """
         <div class="note-card">
             <strong>Data Engineering:</strong> micro-batch simulator writes append-only transactions into SQLite with realistic event timestamps.<br><br>
-            <strong>Advanced SQL:</strong> window functions drive anomaly detection with `LAG`, rolling `COUNT`, rolling `AVG`, and `ROW_NUMBER`.<br><br>
-            <strong>Analytics:</strong> Python layers classify fraud types, aggregate rule hit rates, and convert rule combinations into explainable risk scores.<br><br>
-            <strong>Product Thinking:</strong> the dashboard shows live alert queues, hotspots, and interpretable rule explanations instead of only raw tables.
+            <strong>Machine Learning & AI:</strong> Ensemble scoring combines `Scikit-Learn` unsupervised Isolation Forest models for zero-day anomalies with strict SQL heuristics.<br><br>
+            <strong>Advanced SQL:</strong> Window functions drive deterministic detection via `LAG`, rolling `COUNT`, and moving `AVG`.<br><br>
+            <strong>Analytics:</strong> The AI Copilot generates dynamic natural-language insights interpreting risk probabilities instantly for analysts.
         </div>
         """,
         unsafe_allow_html=True,

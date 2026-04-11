@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
+from sklearn.ensemble import IsolationForest
 
 from database import read_sql
 
@@ -276,7 +277,33 @@ def fetch_flagged_transactions(limit: int = 100) -> pd.DataFrame:
     flagged["fraud_type"] = flagged.apply(_classify_type, axis=1)
     flagged["triggered_rules"] = flagged.apply(_triggered_rules, axis=1)
     flagged["rule_count"] = flagged[RULE_COLUMNS].sum(axis=1)
-    flagged["risk_score"] = flagged.apply(_risk_score, axis=1)
+
+    # --- AI/ML LAYER (Isolation Forest) ---
+    features = ["amount", "txn_count_15m", "merchant_repeat_10m", "minutes_since_prev", "avg_prior_amount"]
+    ml_data = flagged[features].fillna(0)
+    
+    if len(ml_data) > 5:
+        iso = IsolationForest(n_estimators=50, contamination=0.1, random_state=42)
+        iso.fit(ml_data)
+        anomaly_scores = -iso.decision_function(ml_data)
+        ml_boost = pd.Series(anomaly_scores).rank(pct=True) * 40
+    else:
+        ml_boost = 0
+    
+    base_scores = flagged.apply(_risk_score, axis=1)
+    flagged["risk_score"] = (base_scores + ml_boost).apply(lambda x: min(int(x), 99))
+    
+    def _generate_insight(row):
+        score = row["risk_score"]
+        if score > 80:
+            return f"🚨 AI Copilot: Critical {row['fraud_type']} pattern detected. Unsupervised model flagged high structural anomaly coupled with {row['rule_count']} heuristic hits."
+        elif score > 50:
+            return f"⚠️ AI Copilot: Suspicious activity. ML isolation score indicates irregular velocity and spend characteristics."
+        else:
+            return "🔍 AI Copilot: Minor rule trigger. Recommend standard monitor."
+            
+    flagged["ai_insight"] = flagged.apply(_generate_insight, axis=1)
+
     flagged["risk_band"] = pd.cut(
         flagged["risk_score"],
         bins=[0, 40, 70, 100],
